@@ -30,32 +30,34 @@
     pkgs.htop
     pkgs.ripgrep
     pkgs.lazygit
-    pkgs.zulip-term
   ];
-  programs.jq.enable = true;
-  programs.rofi = {
-    enable = false;
-    plugins = [ pkgs.rofi-calc ];
-    theme = "${config.xdg.configHome}/nixpkgs/home/rofi/nord.rasi";
-  };
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
 
-  programs.git = {
-    enable = true;
-    userName = "Pascal Jungblut";
-    userEmail = "mail@pascalj.de";
-    ignores = [ ".lvimrc" ];
+  programs = {
+    jq.enable = true;
+    rofi = {
+      enable = false;
+      plugins = [ pkgs.rofi-calc ];
+      theme = "${config.xdg.configHome}/nixpkgs/home/rofi/nord.rasi";
+    };
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+    git = {
+      enable = true;
+      userName = "Pascal Jungblut";
+      userEmail = "mail@pascalj.de";
+      ignores = [ ".lvimrc" ];
+    };
+    neovim = import
+      ./home/neovim.nix
+      {
+        inherit pkgs lib;
+      };
+    zsh = import
+      ./home/zsh.nix
+      {
+        inherit config lib pkgs;
+      };
   };
-
-  programs.neovim = import ./home/neovim.nix {
-    inherit pkgs lib;
-  };
-
-  programs.zsh = import ./home/zsh.nix {
-    inherit config lib pkgs;
-  };
-
 }
