@@ -1,0 +1,136 @@
+path=($HOME/.nix-profile/bin  $HOME/.local/bin /usr/texbin $HOME/bin /usr/local/bin /usr/bin /usr/sbin /bin /sbin $path)
+
+export EDITOR='nvim'
+
+[[ -f $HOME/.cargo/env ]] && source $HOME/.cargo/env
+
+# locales
+LANG="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+
+# aliases and functions
+
+iterm_title() { echo -ne "\033];$@\007" }
+
+export HOMEBREW_NO_ANALYTICS=1
+export CLICOLOR=1
+
+# functions
+fpath=(~/.zsh $fpath)
+
+[[ -f ~/.credentials ]] && source ~/.credentials
+
+# Prompt
+NDIRS=2
+gitpwd() {
+  local -a segs splitprefix; local prefix branch
+  segs=("${(Oas:/:)${(D)PWD}}")
+  segs=("${(@)segs/(#b)(?(#c10))??*(?(#c5))/${(j:\u2026:)match}}")
+
+  if gitprefix=$(git rev-parse --show-prefix 2>/dev/null); then
+    splitprefix=("${(s:/:)gitprefix}")
+    if ! branch=$(git symbolic-ref -q --short HEAD); then
+      branch=$(git name-rev --name-only HEAD 2>/dev/null)
+      [[ $branch = *\~* ]] || branch+="~0"    # distinguish detached HEAD
+    fi
+    if (( $#splitprefix > NDIRS )); then
+      print -n "${segs[$#splitprefix]}@$branch "
+    else
+      segs[$#splitprefix]+=@$branch
+    fi
+  fi
+
+  (( $#segs == NDIRS+1 )) && [[ $segs[-1] == "" ]] && print -n /
+  print "${(j:/:)${(@Oa)segs[1,NDIRS]}}"
+}
+
+perc_col() {
+  if [[ -v IN_NIX_SHELL ]]; then
+    print "magenta"
+    return
+  else
+    print "blue"
+  fi
+}
+
+# thanks to chris2
+cnprompt6() {
+  case "$TERM" in
+    xterm*|rxvt*)
+      precmd() { [[ -t 1 ]] && print -Pn "\e]0;%m: %~\a" }
+      preexec() { [[ -t 1 ]] && print -n "\e]0;$HOST: ${(q)1//(#m)[$'\000-\037\177-']/${(q)MATCH}}\a" }
+  esac
+  setopt PROMPT_SUBST
+  nbsp=$'\u00A0'
+  PS1='%B%m%(?.. %??)%(1j. %j&.)%b $(gitpwd)%B%(!.%F{red}.%F{$(perc_col)})%#${SSH_CONNECTION:+%#}$nbsp%b%f'
+  RPROMPT=''
+}
+
+cnprompt6
+
+# options
+setopt AUTO_CD
+setopt EXTENDED_GLOB
+setopt AUTO_NAME_DIRS
+unsetopt LIST_BEEP
+setopt MARK_DIRS
+
+# cdpath
+# cdpath=(~/git)
+
+# key bindings
+bindkey '^R' history-incremental-search-backward
+bindkey '^a' beginning-of-line
+bindkey '^e' end-of-line
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
+# history
+export HISTSIZE=2000
+export SAVEHIST=2200
+export HISTFILE=~/.history
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+
+autoload -Uz colors bracketed-paste-magic zmv
+colors
+
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' matcher-list '' 'l:|=* r:|=*' 'l:|=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*' menu yes select
+zstyle ':completion:*:*:kill:*' command 'ps -u$USER -o pid,%cpu,cputime,command'
+zstyle ':completion:*:*:kill:*:processes' \
+    list-colors "=(#b) #([0-9]#) #([^ ]#)*=$color[none]=$color[yellow]=$color[green]"
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+  touch .zcompdump
+else
+  compinit -C
+fi
+# End of lines added by compinstall
+
+bindkey    "^[[3~"          delete-char
+bindkey    "^[3;5~"         delete-char
+
+fast_clear() { tput reset; builtin zle .redisplay; }
+zle -N fast_clear
+bindkey "^L" fast_clear
+
+export FZF_DEFAULT_COMMAND='fd --type f'
+
+[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
+
+# Kitty/alacritty
+export TERM=xterm-256color
+
+eval "$(direnv hook zsh)"
