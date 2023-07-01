@@ -24,7 +24,8 @@ in
         home-manager.useUserPackages = true;
         home-manager.users.pascal = {
           imports = [
-            (import ./home.nix)
+            (import ./home)
+            (import ./annie/home.nix)
           ];
         };
       }
