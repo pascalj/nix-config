@@ -50,12 +50,12 @@
       ignores = [ ".lvimrc" ];
     };
     neovim = import
-      ./home/neovim.nix
+      ./neovim.nix
       {
         inherit pkgs lib;
       };
     zsh = import
-      ./home/zsh.nix
+      ./zsh.nix
       {
         inherit config lib pkgs;
       };

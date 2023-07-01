@@ -1,0 +1,20 @@
+---
+version: "3"
+name: "syncthing"
+services:
+  syncthing:
+    image: syncthing/syncthing
+    container_name: syncthing
+    hostname: jane
+    environment:
+      - PUID=1001
+      - PGID=1001
+      # - STGUIADDRESS=127.0.0.1:8384
+    volumes:
+      - ~/data/syncthing:/var/syncthing
+    ports:
+      - 8384:8384 # Web UI
+      - 22000:22000/tcp # TCP file transfers
+      - 22000:22000/udp # QUIC file transfers
+      # - 21027:21027/udp # Receive local discovery broadcasts
+    restart: unless-stopped

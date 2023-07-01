@@ -1,0 +1,11 @@
+version: "3"
+name: "actual-server"
+services:
+  actual_server:
+    image: jlongster/actual-server
+    container_name: actual_server
+    ports:
+      - "5006:5006"
+    volumes:
+      - ~/data/actual-server:/data/
+    restart: unless-stopped

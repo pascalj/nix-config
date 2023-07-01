@@ -1,0 +1,14 @@
+version: '3'
+name: "linkding"
+
+services:
+  linkding:
+    container_name: "${LD_CONTAINER_NAME:-linkding}"
+    image: sissbruecker/linkding:latest
+    ports:
+      - "8558:9090"
+    volumes:
+      - "~/data/linkding:/etc/linkding/data"
+    env_file:
+      - ~/data/linkding.env
+    restart: unless-stopped

@@ -14,7 +14,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pascal = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFfUommyKXb6CiXOGPiCJ84WhafGn1ME3bAd4h7G3zJC carol"
     ];
