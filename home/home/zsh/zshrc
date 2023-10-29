@@ -1,4 +1,4 @@
-path=($HOME/.nix-profile/bin  $HOME/.local/bin /usr/texbin $HOME/bin /usr/local/bin /usr/bin /usr/sbin /bin /sbin $path)
+path=($HOME/.nix-profile/bin  $HOME/.local/bin $HOME/.cargo/bin /usr/texbin $HOME/bin /usr/local/bin /usr/bin /usr/sbin /bin /sbin $path)
 
 export EDITOR='nvim'
 
@@ -84,7 +84,7 @@ setopt MARK_DIRS
 # cdpath=(~/git)
 
 # key bindings
-bindkey '^R' history-incremental-search-backward
+# bindkey '^R' history-incremental-search-backward
 bindkey '^a' beginning-of-line
 bindkey '^e' end-of-line
 bindkey '^[[1;5D' backward-word
@@ -99,6 +99,8 @@ setopt HIST_IGNORE_ALL_DUPS
 
 autoload -Uz colors bracketed-paste-magic zmv
 colors
+
+eval $(dircolors ~/.dotfiles/dir_colors)
 
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zstyle ':completion:*' matcher-list '' 'l:|=* r:|=*' 'l:|=* r:|=*' 'l:|=* r:|=*'

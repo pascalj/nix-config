@@ -1,4 +1,4 @@
-{ lib, nixpkgs, home-manager, ... }:
+{ lib, nixpkgs, home-manager, homecfg, ... }:
 
 let
   system = "x86_64-linux";
@@ -17,18 +17,13 @@ in
     modules = [
       ./configuration.nix
       ./annie
-
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.pascal = {
-          imports = [
-            (import ./home)
-            (import ./annie/home.nix)
-          ];
-        };
-      }
+    ];
+  };
+  # Laptop
+  nixos = lib.nixosSystem {
+    inherit system;
+    modules = [
+      ./laptop/configuration.nix
     ];
   };
 }
