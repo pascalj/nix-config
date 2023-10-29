@@ -1,4 +1,4 @@
-{ lib, nixpkgs, home-manager, homecfg, ... }:
+{ lib, nixpkgs, home-manager, ... }:
 
 let
   system = "x86_64-linux";
@@ -23,7 +23,8 @@ in
   nixos = lib.nixosSystem {
     inherit system;
     modules = [
-      ./laptop/configuration.nix
+      ./configuration.nix
+      ./laptop
     ];
   };
 }

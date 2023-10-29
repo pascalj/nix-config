@@ -16,7 +16,7 @@
       location = "$HOME/.nix-config";
       # 'home-manager switch' will look for <username>@<host> and <username>
       hosts = [
-        { username = "pascalj"; hostname = "nixos"; }
+        { username = "pascal"; hostname = "nixos"; }
         { username = "pascalj"; hostname = "carol"; }
         { username = "pascal"; hostname = "GS-3KXV8Y3"; }
       ];
