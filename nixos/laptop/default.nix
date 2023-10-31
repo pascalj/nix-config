@@ -7,10 +7,12 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
 
-  environment.systemPackages = with pkgs; [];
+  environment.systemPackages = with pkgs; [ ];
 
   hardware.pulseaudio.enable = true;
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.initrd.luks.devices."luks-6ab21dc8-6040-4a8f-adfd-df00ead54cd0".device = "/dev/disk/by-uuid/6ab21dc8-6040-4a8f-adfd-df00ead54cd0";
   networking.hostName = "nixos"; # Define your hostname.
 
   networking.networkmanager.enable = true;

@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    
+
   ];
 
   services.syncthing.enable = true;
@@ -57,7 +57,7 @@
         }
       ];
       settings = {
-        theme =  {
+        theme = {
           theme = "ctp-mocha";
           overrides = {
             idle_bg = "#303030";
