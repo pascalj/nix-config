@@ -3,23 +3,13 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-3a11ecc8-e8b3-481b-aae7-25ed29aabe3b".device = "/dev/disk/by-uuid/3a11ecc8-e8b3-481b-aae7-25ed29aabe3b";
-  # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
-
-  boot.loader.grub.enableCryptodisk = true;
-
-
-  boot.initrd.luks.devices."luks-6f6be88f-617d-4653-9f12-af4619d9c07c".keyFile = "/crypto_keyfile.bin";
-  boot.initrd.luks.devices."luks-3a11ecc8-e8b3-481b-aae7-25ed29aabe3b".keyFile = "/crypto_keyfile.bin";
 
   environment.systemPackages = with pkgs; [];
+
+  hardware.pulseaudio.enable = true;
 
   networking.hostName = "nixos"; # Define your hostname.
 
@@ -54,10 +44,16 @@
   services.getty.autologinUser = "pascal";
 
   users.users.pascal = {
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
     packages = with pkgs; [
-      neovim
       firefox
+      neovim
+      thunderbird
+      tidal-hifi
+      xfce.xfce4-volumed-pulse
     ];
   };
+
+  sound.enable = true;
+  sound.mediaKeys.enable = true;
 }

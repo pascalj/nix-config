@@ -13,7 +13,7 @@
     ripgrep
     lazygit
     watson
-    iosevka
+    nerdfonts
     tree
   ];
 
@@ -56,5 +56,9 @@
 
   services = {
     ssh-agent.enable = true;
+  };
+
+  xdg.configFile = {
+    "i3/config".source = ./home/dotfiles/i3config;
   };
 }
