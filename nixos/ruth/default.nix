@@ -3,8 +3,13 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    kernelParams = [ "mem_sleep_default=deep" ];
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+  };
 
 
   environment.systemPackages = with pkgs; [ ];
@@ -48,6 +53,8 @@
     };
   };
   services.getty.autologinUser = "pascal";
+  services.power-profiles-daemon.enable = lib.mkDefault true;
+  services.fprintd.enable = lib.mkDefault true;
 
   users.users.pascal = {
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
