@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-
+    nerdfonts
   ];
 
   services.syncthing.enable = true;
@@ -24,6 +24,14 @@
     enable = true;
     bars.default = {
       blocks = [
+        {
+          block = "weather"; 
+          service = {
+            name = "openweathermap";
+            city_id = "2867714";
+            api_key = "c910095a6f0870f4b0e96b698f275cf8";
+          };
+        }
         {
           block = "net";
           format_alt = "$icon ^icon_net_down $graph_down ^icon_net_up $graph_up ";

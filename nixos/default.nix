@@ -20,11 +20,11 @@ in
     ];
   };
   # Laptop
-  nixos = lib.nixosSystem {
+  ruth = lib.nixosSystem {
     inherit system;
     modules = [
       ./configuration.nix
-      ./laptop
+      ./ruth
     ];
   };
 }

@@ -13,7 +13,7 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.luks.devices."luks-6ab21dc8-6040-4a8f-adfd-df00ead54cd0".device = "/dev/disk/by-uuid/6ab21dc8-6040-4a8f-adfd-df00ead54cd0";
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "ruth"; # Define your hostname.
 
   networking.networkmanager.enable = true;
 
@@ -42,6 +42,10 @@
     };
     displayManager.defaultSession = "xfce+i3";
     windowManager.i3.enable = true;
+    libinput = {
+      enable = true;
+      touchpad.naturalScrolling = true;
+    };
   };
   services.getty.autologinUser = "pascal";
 
@@ -50,6 +54,7 @@
     packages = with pkgs; [
       firefox
       neovim
+      signal-desktop
       thunderbird
       tidal-hifi
       xfce.xfce4-volumed-pulse

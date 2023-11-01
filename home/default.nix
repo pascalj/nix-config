@@ -10,11 +10,11 @@
     bat
     fd
     htop
-    ripgrep
     lazygit
-    watson
-    nerdfonts
+    ranger
+    ripgrep
     tree
+    watson
   ];
 
   news.display = "silent";
