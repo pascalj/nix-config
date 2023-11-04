@@ -4,7 +4,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
-    kernelParams = [ "mem_sleep_default=deep" ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -14,11 +13,21 @@
 
   environment.systemPackages = with pkgs; [ ];
 
+  # Smooth scrolling in Firefox
+  environment.sessionVariables = {
+    MOZ_USE_XINPUT2 = "1";
+  };
+
   hardware.pulseaudio.enable = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.luks.devices."luks-6ab21dc8-6040-4a8f-adfd-df00ead54cd0".device = "/dev/disk/by-uuid/6ab21dc8-6040-4a8f-adfd-df00ead54cd0";
-  networking.hostName = "ruth"; # Define your hostname.
+  networking = {
+    hostName = "ruth";
+    hosts = {
+      "127.0.0.1" = [ "mklocal.localhost" ];
+    };
+  };
 
   networking.networkmanager.enable = true;
 
@@ -52,15 +61,18 @@
       touchpad.naturalScrolling = true;
     };
   };
-  services.getty.autologinUser = "pascal";
-  services.power-profiles-daemon.enable = lib.mkDefault true;
-  services.fprintd.enable = lib.mkDefault true;
+  services = {
+    getty.autologinUser = "pascal";
+    power-profiles-daemon.enable = lib.mkDefault true;
+    fprintd.enable = lib.mkDefault true;
+  };
 
   users.users.pascal = {
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
     packages = with pkgs; [
       firefox
       neovim
+      obsidian
       signal-desktop
       thunderbird
       tidal-hifi
@@ -70,4 +82,6 @@
 
   sound.enable = true;
   sound.mediaKeys.enable = true;
+    
+  virtualisation.docker.enable = true;
 }

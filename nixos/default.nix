@@ -1,4 +1,4 @@
-{ lib, nixpkgs, home-manager, ... }:
+{ lib, nixpkgs, home-manager, nixos-hardware, ... }:
 
 let
   system = "x86_64-linux";
@@ -23,6 +23,7 @@ in
   ruth = lib.nixosSystem {
     inherit system;
     modules = [
+      nixos-hardware.nixosModules.framework-13-7040-amd
       ./configuration.nix
       ./ruth
     ];

@@ -8,9 +8,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-hardware.url = "github:kjhoerr/nixos-hardware/fw13-7040";
   };
 
-  outputs = { self, nixpkgs, home-manager }:
+  outputs = { self, nixpkgs, home-manager, nixos-hardware }:
     let
       user = "pascal";
       location = "$HOME/.nix-config";
@@ -45,6 +47,7 @@
         import ./nixos {
           inherit (nixpkgs) lib;
           inherit nixpkgs home-manager;
+          inherit nixos-hardware;
         }
       );
       homeConfigurations = pkgs.lib.attrsets.mergeAttrsList (map mkHome hosts);
