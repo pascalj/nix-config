@@ -11,7 +11,21 @@
   };
 
 
-  environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [ 
+    wayland
+    xdg-utils # for opening default programs when clicking links
+    glib # gsettings
+    dracula-theme # gtk theme
+    gnome3.adwaita-icon-theme  # default gnome cursors
+    swaylock
+    swayidle
+    grim # screenshot functionality
+    slurp # screenshot functionality
+    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
+    bemenu # wayland clone of dmenu
+    mako # notification system developed by swaywm maintainer
+    wdisplays # tool to configure displays
+  ];
 
   # Smooth scrolling in Firefox
   environment.sessionVariables = {
@@ -43,24 +57,40 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  services.xserver = {
-    layout = "eu";
+  # services.xserver = {
+  #   layout = "eu";
+  #   enable = true;
+  #   desktopManager = {
+  #     xterm.enable = false;
+  #     xfce = {
+  #       enable = true;
+  #       noDesktop = true;
+  #       enableXfwm = false;
+  #     };
+  #   };
+  #   displayManager.defaultSession = "xfce+i3";
+  #   windowManager.i3.enable = true;
+  #   libinput = {
+  #     enable = true;
+  #     touchpad.naturalScrolling = true;
+  #   };
+  # };
+  # sway:
+  services.dbus.enable = true;
+  xdg.portal = {
     enable = true;
-    desktopManager = {
-      xterm.enable = false;
-      xfce = {
-        enable = true;
-        noDesktop = true;
-        enableXfwm = false;
-      };
-    };
-    displayManager.defaultSession = "xfce+i3";
-    windowManager.i3.enable = true;
-    libinput = {
-      enable = true;
-      touchpad.naturalScrolling = true;
-    };
+    wlr.enable = true;
+    # gtk portal needed to make gtk apps happy
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
+
+  # enable sway window manager
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+  };
+  programs.light.enable = true;
+
   services = {
     getty.autologinUser = "pascal";
     power-profiles-daemon.enable = lib.mkDefault true;
@@ -68,7 +98,7 @@
   };
 
   users.users.pascal = {
-    extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "video" ];
     packages = with pkgs; [
       firefox
       neovim
@@ -76,12 +106,14 @@
       signal-desktop
       thunderbird
       tidal-hifi
+      unzip
       xfce.xfce4-volumed-pulse
+      zathura
     ];
   };
 
   sound.enable = true;
   sound.mediaKeys.enable = true;
-    
+
   virtualisation.docker.enable = true;
 }

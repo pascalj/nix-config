@@ -190,7 +190,10 @@ bindsym $mod+Ctrl+Shift+Left resize grow width 5 px or 5 ppt
 bindsym --release mod1+Shift+4 exec shutter -s
 
 bindsym $mod+r mode "resize"
-bindysm $mod+Ctrl+Shift+3 mode "resize"
+bindsym $mod+Ctrl+Shift+3 mode "resize"
+
+# sway
+output eDP-1 scale 1.5
 
 set $fgColor #6a7dc9
 
@@ -274,7 +277,7 @@ default_border pixel 2
 hide_edge_borders smart
 
 # TODO: remove! https://github.com/i3/i3/issues/5149
-for_window [all] border pixel 2
+# for_window [all] border pixel 2
 
 exec --no-startup-id setxkbmap -layout eu
 exec --no-startup-id dropbox

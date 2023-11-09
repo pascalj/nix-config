@@ -25,7 +25,7 @@
     bars.default = {
       blocks = [
         {
-          block = "weather"; 
+          block = "weather";
           service = {
             name = "openweathermap";
             city_id = "2867714";
