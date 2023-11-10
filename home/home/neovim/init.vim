@@ -170,6 +170,7 @@ end
 
 require("nvim-autopairs").setup {check_ts = true}
 require'lspconfig'.clangd.setup{on_attach = on_attach}
+require'lspconfig'.nil_ls.setup{on_attach = on_attach}
 require'lspconfig'.smarty_ls.setup{on_attach = on_attach}
 require'lspconfig'.tsserver.setup{on_attach = on_attach}
 require'nvim-treesitter.configs'.setup {

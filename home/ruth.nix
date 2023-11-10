@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     catppuccin-cursors
     catppuccin-gtk
+    dconf
     gnome3.adwaita-icon-theme
     nerdfonts
     wdisplays

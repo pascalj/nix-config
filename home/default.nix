@@ -11,6 +11,7 @@
     fd
     htop
     lazygit
+    nil
     ranger
     ripgrep
     tree

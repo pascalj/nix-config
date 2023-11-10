@@ -14,8 +14,6 @@
 
   outputs = { self, nixpkgs, home-manager, nixos-hardware }:
     let
-      user = "pascal";
-      location = "$HOME/.nix-config";
       # 'home-manager switch' will look for <username>@<host> and <username>
       hosts = [
         { username = "pascal"; hostname = "ruth"; }

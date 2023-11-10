@@ -68,13 +68,7 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
-  # enable sway window manager
-  # programs.sway = {
-  #   enable = true;
-  #   wrapperFeatures.gtk = true;
-  # };
-  # programs.light.enable = true;
-
+  programs.dconf.enable = true;
   services = {
     getty.autologinUser = "pascal";
     power-profiles-daemon.enable = lib.mkDefault true;
