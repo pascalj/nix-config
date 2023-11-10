@@ -2,10 +2,26 @@
 
 {
   home.packages = with pkgs; [
+    catppuccin-cursors
+    catppuccin-gtk
+    gnome3.adwaita-icon-theme
     nerdfonts
     wdisplays
   ];
 
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Catppuccin-Pascal";
+      package = pkgs.catppuccin-gtk.override {
+        accents = [ "teal" ];
+        size = "compact";
+        tweaks = [ "black" ];
+        variant = "mocha";
+      };
+    };
+    cursorTheme.name = "mochaTeal";
+  };
   programs = {
     i3status-rust = {
       enable = true;
