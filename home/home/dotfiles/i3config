@@ -189,9 +189,6 @@ bindsym --release mod1+Shift+4 exec shutter -s
 bindsym $mod+r mode "resize"
 bindsym $mod+Ctrl+Shift+3 mode "resize"
 
-# sway
-output eDP-1 scale 1.5
-
 set $fgColor #6a7dc9
 
 bar {
