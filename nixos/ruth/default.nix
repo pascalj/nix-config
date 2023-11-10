@@ -11,28 +11,22 @@
   };
 
 
-  environment.systemPackages = with pkgs; [ 
-    wayland
-    xdg-utils # for opening default programs when clicking links
-    glib # gsettings
-    dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme  # default gnome cursors
-    swaylock
-    swayidle
-    grim # screenshot functionality
-    slurp # screenshot functionality
-    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    bemenu # wayland clone of dmenu
-    mako # notification system developed by swaywm maintainer
-    wdisplays # tool to configure displays
-  ];
-
-  # Smooth scrolling in Firefox
-  environment.sessionVariables = {
-    MOZ_USE_XINPUT2 = "1";
+  environment = {
+    loginShellInit = ''
+      [[ "$(tty)" == /dev/tty1 ]] && sway
+    '';
+    sessionVariables = {
+      MOZ_USE_XINPUT2 = "1";
+    };
+    systemPackages = with pkgs; [ wayland ];
   };
 
-  hardware.pulseaudio.enable = true;
+  # Smooth scrolling in Firefox
+
+  hardware = {
+    pulseaudio.enable = true;
+    opengl.enable = true;
+  };
 
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.luks.devices."luks-6ab21dc8-6040-4a8f-adfd-df00ead54cd0".device = "/dev/disk/by-uuid/6ab21dc8-6040-4a8f-adfd-df00ead54cd0";
@@ -57,39 +51,29 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # services.xserver = {
-  #   layout = "eu";
-  #   enable = true;
-  #   desktopManager = {
-  #     xterm.enable = false;
-  #     xfce = {
-  #       enable = true;
-  #       noDesktop = true;
-  #       enableXfwm = false;
-  #     };
-  #   };
-  #   displayManager.defaultSession = "xfce+i3";
-  #   windowManager.i3.enable = true;
-  #   libinput = {
-  #     enable = true;
-  #     touchpad.naturalScrolling = true;
-  #   };
-  # };
   # sway:
   services.dbus.enable = true;
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
+    wlr = {
+      enable = true;
+      settings = {
+        screencast = {
+          chooser_type = "simple";
+          chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -ro";
+        };
+      };
+    };
     # gtk portal needed to make gtk apps happy
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
   # enable sway window manager
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
-  programs.light.enable = true;
+  # programs.sway = {
+  #   enable = true;
+  #   wrapperFeatures.gtk = true;
+  # };
+  # programs.light.enable = true;
 
   services = {
     getty.autologinUser = "pascal";
@@ -111,6 +95,12 @@
       zathura
     ];
   };
+
+  security = {
+    pam.services.swaylock = { };
+    polkit.enable = true;
+  };
+
 
   sound.enable = true;
   sound.mediaKeys.enable = true;

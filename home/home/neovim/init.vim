@@ -17,7 +17,6 @@ set nofoldenable
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 set ignorecase
 set smartcase
-set guicursor
 
 " -- Mappings
 let mapleader=","
