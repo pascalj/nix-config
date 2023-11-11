@@ -5,8 +5,9 @@
 
   boot = {
     loader = {
-      systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+      systemd-boot.configurationLimit = 8;
+      systemd-boot.enable = true;
     };
   };
 
@@ -53,21 +54,6 @@
 
   # sway:
   services.dbus.enable = true;
-  xdg.portal = {
-    enable = true;
-    wlr = {
-      enable = true;
-      settings = {
-        screencast = {
-          chooser_type = "simple";
-          chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -ro";
-        };
-      };
-    };
-    # gtk portal needed to make gtk apps happy
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
-
   programs.dconf.enable = true;
   services = {
     getty.autologinUser = "pascal";
