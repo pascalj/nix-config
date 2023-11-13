@@ -169,7 +169,7 @@ local on_attach = function(client, bufnr)
 end
 
 require("nvim-autopairs").setup {check_ts = true}
-require'lspconfig'.clangd.setup{on_attach = on_attach}
+require'lspconfig'.clangd.setup{on_attach = on_attach, cmd = { "/nix/store/xpsx7y2dc02znmx0cc8yqazpngfrryf3-clang-tools-16.0.6/bin/clangd" }}
 require'lspconfig'.nil_ls.setup{on_attach = on_attach}
 require'lspconfig'.smarty_ls.setup{on_attach = on_attach}
 require'lspconfig'.tsserver.setup{on_attach = on_attach}

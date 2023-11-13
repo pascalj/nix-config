@@ -19,7 +19,7 @@
     sessionVariables = {
       MOZ_USE_XINPUT2 = "1";
     };
-    systemPackages = with pkgs; [ wayland ];
+    systemPackages = with pkgs; [ brightnessctl wayland ];
   };
 
   # Smooth scrolling in Firefox
@@ -54,7 +54,9 @@
 
   # sway:
   services.dbus.enable = true;
-  programs.dconf.enable = true;
+  programs = {
+    dconf.enable = true;
+  };
   services = {
     getty.autologinUser = "pascal";
     power-profiles-daemon.enable = lib.mkDefault true;
@@ -72,6 +74,7 @@
       tidal-hifi
       unzip
       xfce.xfce4-volumed-pulse
+      pavucontrol
       zathura
     ];
   };
