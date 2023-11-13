@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -22,7 +22,20 @@
       };
     };
     cursorTheme.name = "mochaTeal";
+    cursorTheme.size = 24;
   };
+
+
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.gnome.adwaita-icon-theme;
+    size = 24;
+    x11 = {
+      enable = true;
+      defaultCursor = "Adwaita";
+    };
+  };
+
   programs = {
     i3status-rust = {
       enable = true;
@@ -96,12 +109,77 @@
         background = "#050505";
       };
     };
-    swaylock.enable = true;
+    swaylock = {
+      enable = true;
+      settings = {
+        color = "1e1e2e";
+        bs-hl-color = "f5e0dc";
+        caps-lock-bs-hl-color = "f5e0dc";
+        caps-lock-key-hl-color = "a6e3a1";
+        inside-color = "00000000";
+        inside-clear-color = "00000000";
+        inside-caps-lock-color = "00000000";
+        inside-ver-color = "00000000";
+        inside-wrong-color = "00000000";
+        key-hl-color = "a6e3a1";
+        layout-bg-color = "00000000";
+        layout-border-color = "00000000";
+        layout-text-color = "cdd6f4";
+        line-color = "00000000";
+        line-clear-color = "00000000";
+        line-caps-lock-color = "00000000";
+        line-ver-color = "00000000";
+        line-wrong-color = "00000000";
+        ring-color = "b4befe";
+        ring-clear-color = "f5e0dc";
+        ring-caps-lock-color = "fab387";
+        ring-ver-color = "89b4fa";
+        ring-wrong-color = "eba0ac";
+        separator-color = "00000000";
+        text-color = "cdd6f4";
+        text-clear-color = "f5e0dc";
+        text-caps-lock-color = "fab387";
+        text-ver-color = "89b4fa";
+        text-wrong-color = "eba0ac";
+      };
+    };
   };
 
   services = {
-    dunst.enable = true;
-    swayidle.enable = true;
+    dunst = {
+      enable = true;
+      settings = {
+        global = {
+          frame_color = "#89B4FA";
+          separator_color = "frame";
+        };
+
+        urgency_low = {
+          background = "#1E1E2E";
+          foreground = "#CDD6F4";
+        };
+
+        urgency_normal = {
+          background = "#1E1E2E";
+          foreground = "#CDD6F4";
+        };
+
+        urgency_critical = {
+          background = "#1E1E2E";
+          foreground = "#CDD6F4";
+          frame_color = "#FAB387";
+        };
+      };
+    };
+    swayidle = {
+      enable = true;
+      timeouts = [
+        {
+          timeout = 900;
+          command = "${pkgs.systemd}/bin/systemctl suspend";
+        }
+      ];
+    };
     syncthing.enable = true;
   };
 
@@ -121,8 +199,12 @@
         "eDP-1" = {
           "scale" = "1.3";
         };
+        "DP-9" = {
+          "scale" = "1";
+        };
       };
     };
     systemd.enable = true;
+    wrapperFeatures.gtk = true;
   };
 }
