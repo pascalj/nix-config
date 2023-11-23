@@ -4,8 +4,10 @@
   home.packages = with pkgs; [
     catppuccin-cursors
     catppuccin-gtk
+    chromium
     dconf
     gnome3.adwaita-icon-theme
+    libreoffice
     nerdfonts
     wdisplays
   ];
