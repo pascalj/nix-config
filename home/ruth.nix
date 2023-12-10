@@ -8,6 +8,7 @@
     dconf
     gnome3.adwaita-icon-theme
     libreoffice
+    networkmanagerapplet
     nerdfonts
     wdisplays
   ];
@@ -173,6 +174,7 @@
         };
       };
     };
+    network-manager-applet.enable = true;
     swayidle = {
       enable = true;
       timeouts = [

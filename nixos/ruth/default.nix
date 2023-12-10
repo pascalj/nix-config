@@ -22,11 +22,30 @@
     systemPackages = with pkgs; [ brightnessctl wayland ];
   };
 
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      nerdfonts
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      liberation_ttf
+      fira-code
+      fira-code-symbols
+      mplus-outline-fonts.githubRelease
+      dina-font
+      proggyfonts
+    ];
+  };
+
   # Smooth scrolling in Firefox
 
   hardware = {
     pulseaudio.enable = true;
     opengl.enable = true;
+
+    # https://github.com/NixOS/nixos-hardware/pull/778
+    framework.amd-7040.preventWakeOnAC = true;
   };
 
   # boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -87,6 +106,9 @@
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", MODE:="0666", SYMLINK+="stm32_dfu"
       # Keymapp Flashing rules for the Voyager
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
+
+      # disable USB receiver wake-up
+      ACTION=="add", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c548", ATTR{power/wakeup}="disabled"
     '';
   };
 
@@ -109,6 +131,12 @@
   security = {
     pam.services.swaylock = { };
     polkit.enable = true;
+  };
+
+  # https://github.com/NixOS/nixpkgs/issues/180175
+  systemd.services = {
+    NetworkManager-wait-online.enable = lib.mkForce false;
+    systemd-networkd-wait-online.enable = lib.mkForce false;
   };
 
 
