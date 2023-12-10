@@ -14,6 +14,7 @@
     nil
     ranger
     ripgrep
+    tailscale
     tree
     watson
   ];
