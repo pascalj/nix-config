@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 
 {
   imports = [ (import ./hardware-configuration.nix) ];
@@ -39,22 +39,15 @@
       virtualHosts."todo.pascalj.de".extraConfig = ''
         reverse_proxy localhost:8560
       '';
-
-      virtualHosts."www.pascalj.de".extraConfig = ''
-        redir https://pascal.jungblut.me{uri}
-      '';
-
       virtualHosts."pascalj.de".extraConfig = ''
-        redir https://pascal.jungblut.me{uri}
-      '';
-
-      virtualHosts."jungblut.me".extraConfig = ''
-        redir https://pascal.jungblut.me{uri}
-      '';
-
-      virtualHosts."pascal.jungblut.me".extraConfig = ''
         root * /var/www/pascalj.de
         file_server
+      '';
+      virtualHosts."www.pascalj.de".extraConfig = ''
+        redir https://pascalj.de{uri}
+      '';
+      virtualHosts."jungblut.me".extraConfig = ''
+        redir https://pascalj.de{uri}
       '';
     };
   };
@@ -72,4 +65,9 @@
   services.openssh.enable = true;
 
   programs.mosh.enable = true;
+
+  users.users.git = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = config.users.users.pascal.openssh.authorizedKeys.keys;
+  };
 }

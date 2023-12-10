@@ -178,7 +178,7 @@ services:
       #  - http://example.com
       #  - http://boards.example.com
       #  - http://192.168.1.100    <=== using at local LAN
-      - ROOT_URL=https://todo2.pascalj.de  #   <=== using only at same laptop/desktop where Wekan is installed
+      - ROOT_URL=https://todo.pascalj.de  #   <=== using only at same laptop/desktop where Wekan is installed
       #---------------------------------------------------------------
       # ==== EMAIL SETTINGS ====
       # Email settings are only at MAIL_URL and MAIL_FROM.
