@@ -14,7 +14,8 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pascal = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
+    description = "Pascal Jungblut";
+    extraGroups = [ "wheel" "docker" "plugdev" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFfUommyKXb6CiXOGPiCJ84WhafGn1ME3bAd4h7G3zJC carol"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF38tclD2a4IUpED4FCwgxPkbtU5JQ8naKSzCmr7DGjW pascal@nixos"
@@ -23,18 +24,13 @@
   };
 
   environment.systemPackages = with pkgs; [
-    vim
+    neovim
     wget
     git
+    home-manager
   ];
 
   programs.zsh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ 22 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -49,5 +45,7 @@
       experimental-features = [ "nix-command" "flakes" ];
     };
   };
+
+  nixpkgs.config.allowUnfree = true;
 }
 

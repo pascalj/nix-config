@@ -1,11 +1,19 @@
 # NixOS and Home Manager Configuration
 
+A way more complete and documented version of this can be found at [MatthiasBenaets/nixos-config](https://github.com/MatthiasBenaets/nixos-config), who inspired this setup.
+
 ## Usage
 
 Applying the configuration of a host:
 
 ```bash
-sudo nixos-rebuild switch --flake ".#annie"
+sudo nixos-rebuild switch --flake . 
+```
+
+Applying the home-manager config for a user:
+
+```bash
+sudo home-manager switch --flake . 
 ```
 
 ## Structure

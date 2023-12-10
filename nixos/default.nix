@@ -1,13 +1,7 @@
-{ lib, nixpkgs, home-manager, ... }:
+{ nixpkgs, nixos-hardware, ... }:
 
 let
   system = "x86_64-linux";
-
-  pkgs = import nixpkgs {
-    inherit system;
-    config.allowUnfree = true;
-  };
-
   lib = nixpkgs.lib;
 in
 {
@@ -17,18 +11,15 @@ in
     modules = [
       ./configuration.nix
       ./annie
-
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.pascal = {
-          imports = [
-            (import ./home)
-            (import ./annie/home.nix)
-          ];
-        };
-      }
+    ];
+  };
+  # Laptop
+  ruth = lib.nixosSystem {
+    inherit system;
+    modules = [
+      nixos-hardware.nixosModules.framework-13-7040-amd
+      ./configuration.nix
+      ./ruth
     ];
   };
 }
