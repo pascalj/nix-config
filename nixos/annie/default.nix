@@ -41,15 +41,18 @@
       virtualHosts."todo.pascalj.de".extraConfig = ''
         reverse_proxy localhost:8560
       '';
-      virtualHosts."pascalj.de".extraConfig = ''
+      virtualHosts."jngb.lt".extraConfig = ''
         root * /var/www/pascalj.de
         file_server
       '';
       virtualHosts."www.pascalj.de".extraConfig = ''
-        redir https://pascalj.de{uri}
+        redir https://jngb.lt{uri}
+      '';
+      virtualHosts."pascalj.de".extraConfig = ''
+        redir https://jngb.lt{uri}
       '';
       virtualHosts."jungblut.me".extraConfig = ''
-        redir https://pascalj.de{uri}
+        redir https://jngb.lt{uri}
       '';
     };
     headscale = {
