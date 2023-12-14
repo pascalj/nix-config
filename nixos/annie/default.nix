@@ -18,7 +18,9 @@
       virtualHosts."actual.pascalj.de".extraConfig = ''
         reverse_proxy localhost:5006
       '';
-
+      virtualHosts."headscale.pascalj.de".extraConfig = ''
+        reverse_proxy localhost:8561
+      '';
       virtualHosts."sync.pascalj.de".extraConfig = ''
         reverse_proxy localhost:8384
       '';
@@ -50,19 +52,26 @@
         redir https://pascalj.de{uri}
       '';
     };
+    headscale = {
+      enable = true;
+      port = 8561;
+      serverUrl = "https://headscale.pascalj.de";
+      dns = { baseDomain = "pascalj.de"; };
+    };
+    openssh.enable = true;
+    tailscale.enable = true;
   };
   virtualisation.docker.enable = true;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/vda";
 
-  environment.systemPackages = [
-    pkgs.docker-compose
+  environment.systemPackages = with pkgs; [
+    docker-compose
+    mosh
   ];
 
   networking.hostName = "annie";
-
-  services.openssh.enable = true;
 
   programs.mosh.enable = true;
 

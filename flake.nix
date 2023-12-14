@@ -17,6 +17,7 @@
       # 'home-manager switch' will look for <username>@<host> and <username>
       hosts = [
         { username = "pascal"; hostname = "ruth"; }
+        { username = "pascal"; hostname = "annie"; }
         { username = "pascalj"; hostname = "carol"; }
         { username = "pascal"; hostname = "GS-3KXV8Y3"; }
       ];
