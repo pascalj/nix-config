@@ -8,6 +8,7 @@
     dconf
     gnome3.adwaita-icon-theme
     libreoffice
+    mosh
     networkmanagerapplet
     nerdfonts
     wdisplays
