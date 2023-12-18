@@ -18,7 +18,6 @@
       hosts = [
         { username = "pascal"; hostname = "ruth"; }
         { username = "pascal"; hostname = "annie"; }
-        { username = "pascalj"; hostname = "carol"; }
         { username = "pascal"; hostname = "GS-3KXV8Y3"; }
       ];
 
