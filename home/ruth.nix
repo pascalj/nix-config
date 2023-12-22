@@ -12,6 +12,7 @@
     networkmanagerapplet
     nerdfonts
     wdisplays
+    zotero
   ];
 
   gtk = {
