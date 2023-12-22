@@ -55,9 +55,12 @@
     hosts = {
       "127.0.0.1" = [ "mklocal.localhost" ];
     };
+    networkmanager.enable = true;
   };
 
-  networking.networkmanager.enable = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0"
+  ];
 
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
@@ -71,12 +74,12 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # sway:
-  services.dbus.enable = true;
   programs = {
     dconf.enable = true;
   };
+
   services = {
+    dbus.enable = true;
     getty.autologinUser = "pascal";
     power-profiles-daemon.enable = lib.mkDefault true;
     fprintd.enable = lib.mkDefault true;
