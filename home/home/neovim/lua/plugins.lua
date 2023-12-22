@@ -57,6 +57,27 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, bufopts)
 end
 
+local cmp = require'cmp'
+cmp.setup {
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert {
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources{
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+    }, {
+        { name = 'buffer' },
+    }
+}
+
 require("nvim-autopairs").setup { check_ts = true }
 require 'gitsigns'.setup {}
 require 'lspconfig'.clangd.setup { on_attach = on_attach, cmd = { "/nix/store/xpsx7y2dc02znmx0cc8yqazpngfrryf3-clang-tools-16.0.6/bin/clangd" } }

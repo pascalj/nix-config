@@ -21,11 +21,15 @@ in
 
   plugins = with pkgs.vimPlugins; [
     catppuccin-nvim
+    cmp-nvim-lsp
+    cmp-nvim-lsp-signature-help
+    cmp-path
     gitsigns-nvim
     goto-preview
     lualine-nvim
     minimap-vim
     nvim-autopairs
+    nvim-cmp
     nvim-lspconfig
     nvim-navic
     telescope-nvim
