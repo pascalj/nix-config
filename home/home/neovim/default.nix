@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
   configuration = pkgs.vimUtils.buildVimPlugin {
@@ -13,11 +13,15 @@ in
   vimAlias = true;
   withRuby = false;
   withNodeJs = false;
+  extraLuaConfig = "require(\"init\")";
 
-  extraConfig = lib.fileContents ./init.vim;
+  extraPackages = with pkgs; [
+    lua-language-server
+  ];
 
   plugins = with pkgs.vimPlugins; [
     catppuccin-nvim
+    gitsigns-nvim
     goto-preview
     lualine-nvim
     minimap-vim
@@ -37,6 +41,7 @@ in
         c
         cpp
         latex
+        lua
         markdown
         nix
         python
