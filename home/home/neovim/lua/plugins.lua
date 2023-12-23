@@ -57,7 +57,7 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, bufopts)
 end
 
-local cmp = require'cmp'
+local cmp = require 'cmp'
 cmp.setup {
     window = {
         completion = cmp.config.window.bordered(),
@@ -70,12 +70,12 @@ cmp.setup {
         ['<C-e>'] = cmp.mapping.abort(),
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
     },
-    sources = cmp.config.sources{
+    sources = cmp.config.sources {
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
     }, {
-        { name = 'buffer' },
-    }
+    { name = 'buffer' },
+}
 }
 
 require("nvim-autopairs").setup { check_ts = true }
