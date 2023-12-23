@@ -16,6 +16,7 @@ in
   extraLuaConfig = "require(\"init\")";
 
   extraPackages = with pkgs; [
+    clang-tools_17
     lua-language-server
   ];
 
