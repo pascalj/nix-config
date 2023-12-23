@@ -84,7 +84,8 @@
     dbus.enable = true;
     getty.autologinUser = "pascal";
     power-profiles-daemon.enable = lib.mkDefault true;
-    fprintd.enable = lib.mkDefault true;
+    fprintd.enable = true;
+    fwupd.enable = true;
 
     udev.extraRules = ''
       # Rules for Oryx web flashing and live training
@@ -135,7 +136,13 @@
   };
 
   security = {
-    pam.services.swaylock = { };
+    pam.services.swaylock = {
+      text = ''
+        auth sufficient pam_unix.so try_first_pass likeauth nullok
+        auth sufficient pam_fprintd.so
+        auth include login
+      '';
+    };
     polkit.enable = true;
   };
 
