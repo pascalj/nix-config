@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   home.packages = with pkgs; [
@@ -172,6 +172,16 @@
         {
           timeout = 900;
           command = "${pkgs.systemd}/bin/systemctl suspend";
+        }
+      ];
+      events = [
+        {
+          event = "before-sleep";
+          command = "${config.programs.swaylock.package}/bin/swaylock";
+        }
+        {
+          event = "lock";
+          command = "${config.programs.swaylock.package}/bin/swaylock";
         }
       ];
     };
