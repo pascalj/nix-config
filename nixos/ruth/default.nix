@@ -78,6 +78,8 @@
     dconf.enable = true;
   };
 
+  powerManagement.powertop.enable = true;
+
   services = {
     dbus.enable = true;
     getty.autologinUser = "pascal";
