@@ -6,6 +6,7 @@ let
     version = "v1.0.0";
     src = ./.;
   };
+  clang-tools = pkgs.clang-tools_17;
 in
 {
   enable = true;
@@ -16,7 +17,9 @@ in
   extraLuaConfig = "require(\"init\")";
 
   extraPackages = with pkgs; [
-    clang-tools_17
+    # Create dummy binaries to pin the version and use the wrapped versions for neovim
+    (pkgs.writeShellScriptBin "clangd-vim" "${clang-tools}/bin/clangd $@")
+    (pkgs.writeShellScriptBin "clang-tidy-vim" "${clang-tools}/bin/clang-tidy $@")
     lua-language-server
   ];
 

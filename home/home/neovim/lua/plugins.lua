@@ -80,7 +80,7 @@ cmp.setup {
 
 require("nvim-autopairs").setup { check_ts = true }
 require 'gitsigns'.setup {}
-require 'lspconfig'.clangd.setup { on_attach = on_attach }
+require 'lspconfig'.clangd.setup { on_attach = on_attach, cmd = { "clangd-vim" } }
 require 'lspconfig'.lua_ls.setup { on_attach = on_attach }
 require 'lspconfig'.nil_ls.setup { on_attach = on_attach }
 require 'lspconfig'.smarty_ls.setup { on_attach = on_attach }
