@@ -170,6 +170,11 @@
       enable = true;
       timeouts = [
         {
+          timeout = 600;
+          command = "${config.wayland.windowManager.sway.package}/bin/swaymsg 'output * power off'";
+          resumeCommand = "${config.wayland.windowManager.sway.package}/bin/swaymsg 'output * power on'";
+        }
+        {
           timeout = 900;
           command = "${pkgs.systemd}/bin/systemctl suspend";
         }
@@ -177,11 +182,7 @@
       events = [
         {
           event = "before-sleep";
-          command = "${config.programs.swaylock.package}/bin/swaylock";
-        }
-        {
-          event = "lock";
-          command = "${config.programs.swaylock.package}/bin/swaylock";
+          command = "${config.programs.swaylock.package}/bin/swaylock -f";
         }
       ];
     };
