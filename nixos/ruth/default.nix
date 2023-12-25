@@ -86,6 +86,10 @@
     power-profiles-daemon.enable = lib.mkDefault true;
     fprintd.enable = true;
     fwupd.enable = true;
+    logind.extraConfig = ''
+      # don’t shutdown when power button is short-pressed
+      HandlePowerKey=suspend
+    '';
 
     udev.extraRules = ''
       # Rules for Oryx web flashing and live training
