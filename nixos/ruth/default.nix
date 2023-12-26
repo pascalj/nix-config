@@ -58,9 +58,13 @@
     networkmanager.enable = true;
   };
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
-  ];
+  nixpkgs.config = {
+    permittedInsecurePackages = [
+      "electron-25.9.0"
+
+    ];
+    zathura.useMupdf = false;
+  };
 
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
