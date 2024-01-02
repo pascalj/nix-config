@@ -15,9 +15,10 @@
   users.users.pascal = {
     isNormalUser = true;
     description = "Pascal Jungblut";
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "plugdev" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFfUommyKXb6CiXOGPiCJ84WhafGn1ME3bAd4h7G3zJC carol"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF38tclD2a4IUpED4FCwgxPkbtU5JQ8naKSzCmr7DGjW pascal@nixos"
     ];
     shell = pkgs.zsh;
   };

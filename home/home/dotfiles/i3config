@@ -36,7 +36,7 @@ bindsym $mod+Return exec /usr/bin/kitty
 bindsym $mod+Shift+Return exec thunar
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+space exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -show-icons -show drun'
@@ -74,10 +74,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # media control
-bindsym $mod+Ctrl+Left exec playerctl previous
-bindsym $mod+Ctrl+Right exec playerctl next
-bindsym $mod+Ctrl+Up exec playerctl play-pause
-bindsym XF86AudioPlay exec dbus-send --session --type="method_call" --dest='com.github.radiotray_ng' '/com/github/radiotray_ng' 'com.github.radiotray_ng.play'
+# bindsym XF86AudioPlay exec dbus-send --session --type="method_call" --dest='com.github.radiotray_ng' '/com/github/radiotray_ng' 'com.github.radiotray_ng.play'
 
 # split in horizontal orientation
 # bindsym $mod+h split h
@@ -157,11 +154,11 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Ctrl+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -177,16 +174,13 @@ mode "resize" {
         # bindsym $mod+r mode "default"
 }
 
-bindsym $mod+Ctrl+Shift+Right resize shrink width 5 px or 5 ppt
-bindsym $mod+Ctrl+Shift+Up resize grow height 5 px or 5 ppt
-bindsym $mod+Ctrl+Shift+Down resize shrink height 5 px or 5 ppt
-bindsym $mod+Ctrl+Shift+Left resize grow width 5 px or 5 ppt
+bindsym $mod+Ctrl+Right resize shrink width 5 px or 5 ppt
+bindsym $mod+Ctrl+Up resize grow height 5 px or 5 ppt
+bindsym $mod+Ctrl+Down resize shrink height 5 px or 5 ppt
+bindsym $mod+Ctrl+Left resize grow width 5 px or 5 ppt
 
 # screenshot
-bindsym --release mod1+Shift+4 exec shutter -s
-
-bindsym $mod+r mode "resize"
-bindsym $mod+Ctrl+Shift+3 mode "resize"
+bindsym --release $mod+4 exec shutter -s
 
 set $fgColor #6a7dc9
 

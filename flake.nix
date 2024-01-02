@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-hardware.url = "github:kjhoerr/nixos-hardware/fw13-7040";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs = { self, nixpkgs, home-manager, nixos-hardware }:
@@ -17,6 +17,7 @@
       # 'home-manager switch' will look for <username>@<host> and <username>
       hosts = [
         { username = "pascal"; hostname = "ruth"; }
+        { username = "pascal"; hostname = "annie"; }
         { username = "pascalj"; hostname = "carol"; }
         { username = "pascal"; hostname = "GS-3KXV8Y3"; }
       ];

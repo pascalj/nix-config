@@ -9,7 +9,7 @@ services:
       - db
     environment:
       - DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable
-      # - RUN_MIGRATIONS=1
+      - RUN_MIGRATIONS=1
     restart: unless-stopped
 
   db:

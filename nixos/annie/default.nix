@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 
 {
   imports = [ (import ./hardware-configuration.nix) ];
@@ -18,7 +18,9 @@
       virtualHosts."actual.pascalj.de".extraConfig = ''
         reverse_proxy localhost:5006
       '';
-
+      virtualHosts."headscale.pascalj.de".extraConfig = ''
+        reverse_proxy localhost:8561
+      '';
       virtualHosts."sync.pascalj.de".extraConfig = ''
         reverse_proxy localhost:8384
       '';
@@ -39,37 +41,45 @@
       virtualHosts."todo.pascalj.de".extraConfig = ''
         reverse_proxy localhost:8560
       '';
-
-      virtualHosts."www.pascalj.de".extraConfig = ''
-        redir https://pascal.jungblut.me{uri}
-      '';
-
-      virtualHosts."pascalj.de".extraConfig = ''
-        redir https://pascal.jungblut.me{uri}
-      '';
-
-      virtualHosts."jungblut.me".extraConfig = ''
-        redir https://pascal.jungblut.me{uri}
-      '';
-
-      virtualHosts."pascal.jungblut.me".extraConfig = ''
+      virtualHosts."jngb.lt".extraConfig = ''
         root * /var/www/pascalj.de
         file_server
       '';
+      virtualHosts."www.pascalj.de".extraConfig = ''
+        redir https://jngb.lt{uri}
+      '';
+      virtualHosts."pascalj.de".extraConfig = ''
+        redir https://jngb.lt{uri}
+      '';
+      virtualHosts."jungblut.me".extraConfig = ''
+        redir https://jngb.lt{uri}
+      '';
     };
+    headscale = {
+      enable = true;
+      port = 8561;
+      serverUrl = "https://headscale.pascalj.de";
+      dns = { baseDomain = "pascalj.de"; };
+    };
+    openssh.enable = true;
+    tailscale.enable = true;
   };
   virtualisation.docker.enable = true;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/vda";
 
-  environment.systemPackages = [
-    pkgs.docker-compose
+  environment.systemPackages = with pkgs; [
+    docker-compose
+    mosh
   ];
 
   networking.hostName = "annie";
 
-  services.openssh.enable = true;
-
   programs.mosh.enable = true;
+
+  users.users.git = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = config.users.users.pascal.openssh.authorizedKeys.keys;
+  };
 }

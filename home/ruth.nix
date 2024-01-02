@@ -1,13 +1,18 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   home.packages = with pkgs; [
     catppuccin-cursors
     catppuccin-gtk
+    chromium
     dconf
     gnome3.adwaita-icon-theme
+    libreoffice
+    mosh
+    networkmanagerapplet
     nerdfonts
     wdisplays
+    zotero
   ];
 
   gtk = {
@@ -61,26 +66,15 @@
             warning = 20.0;
             alert = 10.0;
           }
-          {
-            block = "memory";
-            format = " $icon $mem_used_percents ";
-          }
-          {
-            block = "cpu";
-            interval = 1;
-          }
-          {
-            block = "load";
-            interval = 1;
-            format = " $icon $1m ";
-          }
+          { block = "memory"; format = " $icon $mem_used_percents "; }
+          { block = "cpu"; interval = 1; format_alt = " $icon $frequency "; }
           { block = "sound"; }
           { block = "backlight"; }
-          { block = "battery"; }
+          { block = "battery"; format = " $icon  $percentage "; good = 99; }
           { block = "notify"; }
           {
             block = "time";
-            interval = 60;
+            interval = 1;
             format = " $timestamp.datetime(f:'%a %d/%m %R') ";
           }
         ];
@@ -171,12 +165,24 @@
         };
       };
     };
+    network-manager-applet.enable = true;
     swayidle = {
       enable = true;
       timeouts = [
         {
+          timeout = 600;
+          command = "${config.wayland.windowManager.sway.package}/bin/swaymsg 'output * power off'";
+          resumeCommand = "${config.wayland.windowManager.sway.package}/bin/swaymsg 'output * power on'";
+        }
+        {
           timeout = 900;
           command = "${pkgs.systemd}/bin/systemctl suspend";
+        }
+      ];
+      events = [
+        {
+          event = "before-sleep";
+          command = "${config.programs.swaylock.package}/bin/swaylock -f";
         }
       ];
     };
