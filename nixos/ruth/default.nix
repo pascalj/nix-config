@@ -19,7 +19,11 @@
     sessionVariables = {
       MOZ_USE_XINPUT2 = "1";
     };
-    systemPackages = with pkgs; [ brightnessctl wayland ];
+    systemPackages = with pkgs; [
+      linuxKernel.packages.linux_6_1.vmware
+      brightnessctl
+      wayland
+    ];
   };
 
   fonts = {
@@ -164,5 +168,8 @@
   sound.enable = true;
   sound.mediaKeys.enable = true;
 
-  virtualisation.docker.enable = true;
+  virtualisation = {
+    docker.enable = true;
+    vmware.host.enable = true;
+  };
 }
