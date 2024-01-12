@@ -229,6 +229,7 @@ mode "spotlight" {
    ## calculator
    bindsym c exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -show calc -no-sort -no-show-match -calc-command \"echo -n {result} | xclip -selection clipboard\" -no-history -lines 0' ; mode "default"
    bindsym s exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -show sink -modes "sink:~/bin/rofi_sound.sh" -no-history -lines 0' ; mode "default"
+   bindsym e exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -modi "emoji:rofimoji" -show emoji' ; mode "default"
 
    ## just in case we did this by mistake
    bindsym Escape mode "default"
