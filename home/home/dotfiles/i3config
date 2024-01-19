@@ -185,7 +185,7 @@ bindsym --release $mod+4 exec shutter -s
 set $fgColor #6a7dc9
 
 bar {
-    status_command i3status-rs ~/.config/i3status-rust/config-default.toml
+    status_command ~/.nix-profile/bin/i3status-rs ~/.config/i3status-rust/config-default.toml
         position top
         colors {
             background #303030
