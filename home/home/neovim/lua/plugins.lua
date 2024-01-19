@@ -83,6 +83,7 @@ require 'gitsigns'.setup {}
 require 'lspconfig'.clangd.setup { on_attach = on_attach, cmd = { "clangd-vim" } }
 require 'lspconfig'.lua_ls.setup { on_attach = on_attach }
 require 'lspconfig'.nil_ls.setup { on_attach = on_attach }
+require 'lspconfig'.pyright.setup { on_attach = on_attach }
 require 'lspconfig'.smarty_ls.setup { on_attach = on_attach }
 require 'lspconfig'.tsserver.setup { on_attach = on_attach }
 require 'nvim-treesitter.configs'.setup {
