@@ -11,6 +11,8 @@
     mosh
     networkmanagerapplet
     nerdfonts
+    xfce.thunar
+    xfce.thunar-volman
     wdisplays
     zotero
   ];

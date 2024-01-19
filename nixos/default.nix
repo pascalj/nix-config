@@ -1,8 +1,20 @@
-{ nixpkgs, nixos-hardware, ... }:
+{ self, nixpkgs, nixos-hardware, ... }:
 
 let
   system = "x86_64-linux";
   lib = nixpkgs.lib;
+  autoUpdate = ({ system, ... }: {
+    system.autoUpgrade = {
+      enable = true;
+      flake = self.outPath;
+      flags = [
+        "--update-input"
+        "nixpkgs"
+        "-L"
+      ];
+      dates = "daily";
+    };
+  });
 in
 {
   # Server
@@ -11,6 +23,7 @@ in
     modules = [
       ./configuration.nix
       ./annie
+      autoUpdate
     ];
   };
   # Laptop
@@ -20,6 +33,7 @@ in
       nixos-hardware.nixosModules.framework-13-7040-amd
       ./configuration.nix
       ./ruth
+      autoUpdate
     ];
   };
 }
