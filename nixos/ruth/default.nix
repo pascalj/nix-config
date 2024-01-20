@@ -129,7 +129,7 @@
       # disable USB receiver wake-up
       ACTION=="add", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c548", ATTR{power/wakeup}="disabled"
     '';
-    tailscale.enable = true;
+    # tailscale.enable = true;
   };
 
   users.users.pascal = {
