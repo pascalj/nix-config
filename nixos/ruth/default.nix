@@ -4,6 +4,7 @@
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_6_6;
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.configurationLimit = 8;
@@ -20,7 +21,7 @@
       MOZ_USE_XINPUT2 = "1";
     };
     systemPackages = with pkgs; [
-      linuxKernel.packages.linux_6_1.vmware
+      linuxKernel.packages.linux_6_6.vmware
       brightnessctl
       wayland
     ];
@@ -101,18 +102,18 @@
 
     udev.extraRules = ''
       # Rules for Oryx web flashing and live training
-      KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", GROUP="plugdev"
-      KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", GROUP="plugdev"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", TAG+="uaccess"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", TAG+="uaccess"
 
       # Legacy rules for live training over webusb (Not needed for firmware v21+)
         # Rule for all ZSA keyboards
-        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", TAG+="uaccess"
         # Rule for the Moonlander
-        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", ATTR{idProduct}=="1969", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", ATTR{idProduct}=="1969", TAG+="uaccess"
         # Rule for the Ergodox EZ
-        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", TAG+="uaccess"
         # Rule for the Planck EZ
-        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="6060", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="6060", TAG+="uaccess"
 
       # Wally Flashing rules for the Ergodox EZ
       ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1"
@@ -128,7 +129,7 @@
       # disable USB receiver wake-up
       ACTION=="add", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c548", ATTR{power/wakeup}="disabled"
     '';
-    tailscale.enable = true;
+    # tailscale.enable = true;
   };
 
   users.users.pascal = {
