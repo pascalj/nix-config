@@ -21,6 +21,7 @@ in
     (pkgs.writeShellScriptBin "clangd-vim" "${clang-tools}/bin/clangd $@")
     (pkgs.writeShellScriptBin "clang-tidy-vim" "${clang-tools}/bin/clang-tidy $@")
     lua-language-server
+    ltex-ls
   ];
 
   plugins = with pkgs.vimPlugins; [
