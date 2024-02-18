@@ -93,6 +93,7 @@ require 'lspconfig'.ltex.setup {
     },
 }
 require 'lspconfig'.nil_ls.setup { on_attach = on_attach }
+require 'lspconfig'.pyright.setup { on_attach = on_attach }
 require 'lspconfig'.smarty_ls.setup { on_attach = on_attach }
 require 'lspconfig'.tsserver.setup { on_attach = on_attach }
 require 'nvim-treesitter.configs'.setup {

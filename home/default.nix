@@ -14,6 +14,7 @@
     nil
     ranger
     ripgrep
+    rofimoji
     tailscale
     tree
     watson
@@ -67,5 +68,10 @@
 
   xdg.configFile = {
     "i3/config".source = ./home/dotfiles/i3config;
+    "rofimoji.rc".text = ''
+      action = copy
+      skin-tone = neutral
+      max-recent = 0
+    '';
   };
 }
