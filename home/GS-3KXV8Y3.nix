@@ -28,7 +28,7 @@
     gnome3.adwaita-icon-theme
     nerdfonts
 
-    clang-tools_16
+    clang-tools_17
   ];
 
   programs.git.userEmail = "pascal.jungblut@guardsquare.com";
