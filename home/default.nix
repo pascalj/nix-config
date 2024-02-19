@@ -52,6 +52,11 @@
       plugins = [ pkgs.rofi-calc ];
       theme = ./home/rofi/nord.rasi;
     };
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      options = [ "--cmd cd" ];
+    };
     zsh = import ./home/zsh {
       inherit config lib pkgs;
     };

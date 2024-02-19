@@ -4,7 +4,8 @@
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_6_7;
+    kernelParams = ["amdgpu.sg_display=0"];
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.configurationLimit = 8;
@@ -15,13 +16,13 @@
 
   environment = {
     loginShellInit = ''
-      [[ "$(tty)" == /dev/tty1 ]] && sway
+      [[ "$(tty)" == /dev/tty1 ]] && Hyprland
     '';
     sessionVariables = {
       MOZ_USE_XINPUT2 = "1";
     };
     systemPackages = with pkgs; [
-      linuxKernel.packages.linux_6_6.vmware
+      linuxKernel.packages.linux_6_7.vmware
       brightnessctl
       wayland
     ];
@@ -85,6 +86,7 @@
 
   programs = {
     dconf.enable = true;
+    hyprland.enable = true;
   };
 
   powerManagement.powertop.enable = true;
@@ -95,10 +97,12 @@
     power-profiles-daemon.enable = lib.mkDefault true;
     fprintd.enable = true;
     fwupd.enable = true;
-    logind.extraConfig = ''
-      # don’t shutdown when power button is short-pressed
-      HandlePowerKey=suspend
-    '';
+    logind = {
+      lidSwitchDocked = "suspend";
+      lidSwitchExternalPower = "suspend";
+      powerKey = "suspend";
+      powerKeyLongPress = "poweroff";
+    };
 
     udev.extraRules = ''
       # Rules for Oryx web flashing and live training
