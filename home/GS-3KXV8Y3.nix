@@ -64,6 +64,10 @@
       bars.default = {
         blocks = [
           {
+            block = "watson";
+            show_time = true;
+          }
+          {
             block = "weather";
             service = {
               name = "openweathermap";
