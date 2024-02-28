@@ -4,6 +4,8 @@
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_6_7;
+    kernelParams = ["amdgpu.sg_display=0"];
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.configurationLimit = 8;
@@ -14,12 +16,16 @@
 
   environment = {
     loginShellInit = ''
-      [[ "$(tty)" == /dev/tty1 ]] && sway
+      [[ "$(tty)" == /dev/tty1 ]] && Hyprland
     '';
     sessionVariables = {
       MOZ_USE_XINPUT2 = "1";
     };
-    systemPackages = with pkgs; [ brightnessctl wayland ];
+    systemPackages = with pkgs; [
+      linuxKernel.packages.linux_6_7.vmware
+      brightnessctl
+      wayland
+    ];
   };
 
   fonts = {
@@ -55,9 +61,16 @@
     hosts = {
       "127.0.0.1" = [ "mklocal.localhost" ];
     };
+    networkmanager.enable = true;
   };
 
-  networking.networkmanager.enable = true;
+  nixpkgs.config = {
+    permittedInsecurePackages = [
+      "electron-25.9.0"
+
+    ];
+    zathura.useMupdf = false;
+  };
 
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
@@ -71,30 +84,40 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # sway:
-  services.dbus.enable = true;
   programs = {
     dconf.enable = true;
+    hyprland.enable = true;
   };
+
+  powerManagement.powertop.enable = true;
+
   services = {
+    dbus.enable = true;
     getty.autologinUser = "pascal";
     power-profiles-daemon.enable = lib.mkDefault true;
-    fprintd.enable = lib.mkDefault true;
+    fprintd.enable = true;
+    fwupd.enable = true;
+    logind = {
+      lidSwitchDocked = "suspend";
+      lidSwitchExternalPower = "suspend";
+      powerKey = "suspend";
+      powerKeyLongPress = "poweroff";
+    };
 
     udev.extraRules = ''
       # Rules for Oryx web flashing and live training
-      KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", GROUP="plugdev"
-      KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", GROUP="plugdev"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", TAG+="uaccess"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", TAG+="uaccess"
 
       # Legacy rules for live training over webusb (Not needed for firmware v21+)
         # Rule for all ZSA keyboards
-        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", TAG+="uaccess"
         # Rule for the Moonlander
-        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", ATTR{idProduct}=="1969", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="3297", ATTR{idProduct}=="1969", TAG+="uaccess"
         # Rule for the Ergodox EZ
-        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", TAG+="uaccess"
         # Rule for the Planck EZ
-        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="6060", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="6060", TAG+="uaccess"
 
       # Wally Flashing rules for the Ergodox EZ
       ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1"
@@ -110,7 +133,7 @@
       # disable USB receiver wake-up
       ACTION=="add", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c548", ATTR{power/wakeup}="disabled"
     '';
-    tailscale.enable = true;
+    # tailscale.enable = true;
   };
 
   users.users.pascal = {
@@ -130,7 +153,13 @@
   };
 
   security = {
-    pam.services.swaylock = { };
+    pam.services.swaylock = {
+      text = ''
+        auth sufficient pam_unix.so try_first_pass likeauth nullok
+        auth sufficient pam_fprintd.so
+        auth include login
+      '';
+    };
     polkit.enable = true;
   };
 
@@ -144,5 +173,8 @@
   sound.enable = true;
   sound.mediaKeys.enable = true;
 
-  virtualisation.docker.enable = true;
+  virtualisation = {
+    docker.enable = true;
+    vmware.host.enable = true;
+  };
 }

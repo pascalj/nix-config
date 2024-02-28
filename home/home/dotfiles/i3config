@@ -32,11 +32,11 @@ font pango:Terminus 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec /usr/bin/kitty
 bindsym $mod+Shift+Return exec thunar
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+space exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -show-icons -show drun'
@@ -74,10 +74,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # media control
-bindsym $mod+Ctrl+Left exec playerctl previous
-bindsym $mod+Ctrl+Right exec playerctl next
-bindsym $mod+Ctrl+Up exec playerctl play-pause
-bindsym XF86AudioPlay exec dbus-send --session --type="method_call" --dest='com.github.radiotray_ng' '/com/github/radiotray_ng' 'com.github.radiotray_ng.play'
+# bindsym XF86AudioPlay exec dbus-send --session --type="method_call" --dest='com.github.radiotray_ng' '/com/github/radiotray_ng' 'com.github.radiotray_ng.play'
 
 # split in horizontal orientation
 # bindsym $mod+h split h
@@ -121,8 +118,9 @@ set $ws9 "9"
 set $ws10 "10"
 
 # Define monitors
-set $monitor_left DP-1-3-8 DP-3-3-8 DP-9
+set $monitor_left DP-1-3-8 DP-3-3-8 DP-9 DP-1-1
 set $monitor_right DP-1-3-1 DP-3-3-1 DP-10
+set $monitor_front DP-1-8
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -137,11 +135,11 @@ bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
 
 workspace $ws1 output $monitor_internal
-workspace $ws2 output $monitor_left $monitor_internal
-workspace $ws3 output $monitor_left $monitor_internal
-workspace $ws4 output $monitor_right $monitor_internal
-workspace $ws5 output $monitor_right $monitor_internal
-workspace $ws6 output $monitor_right $monitor_internal
+workspace $ws2 output $monitor_front $monitor_internal
+workspace $ws3 output $monitor_front $monitor_internal
+workspace $ws4 output $monitor_front $monitor_internal
+workspace $ws5 output $monitor_left $monitor_internal
+workspace $ws6 output $monitor_left $monitor_internal
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
@@ -156,11 +154,11 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Ctrl+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -176,21 +174,18 @@ mode "resize" {
         # bindsym $mod+r mode "default"
 }
 
-bindsym $mod+Ctrl+Shift+Right resize shrink width 5 px or 5 ppt
-bindsym $mod+Ctrl+Shift+Up resize grow height 5 px or 5 ppt
-bindsym $mod+Ctrl+Shift+Down resize shrink height 5 px or 5 ppt
-bindsym $mod+Ctrl+Shift+Left resize grow width 5 px or 5 ppt
+bindsym $mod+Ctrl+Right resize shrink width 5 px or 5 ppt
+bindsym $mod+Ctrl+Up resize grow height 5 px or 5 ppt
+bindsym $mod+Ctrl+Down resize shrink height 5 px or 5 ppt
+bindsym $mod+Ctrl+Left resize grow width 5 px or 5 ppt
 
 # screenshot
-bindsym --release mod1+Shift+4 exec shutter -s
-
-bindsym $mod+r mode "resize"
-bindsym $mod+Ctrl+Shift+3 mode "resize"
+bindsym --release $mod+4 exec shutter -s
 
 set $fgColor #6a7dc9
 
 bar {
-    status_command i3status-rs ~/.config/i3status-rust/config-default.toml
+    status_command ~/.nix-profile/bin/i3status-rs ~/.config/i3status-rust/config-default.toml
         position top
         colors {
             background #303030
@@ -234,6 +229,7 @@ mode "spotlight" {
    ## calculator
    bindsym c exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -show calc -no-sort -no-show-match -calc-command \"echo -n {result} | xclip -selection clipboard\" -no-history -lines 0' ; mode "default"
    bindsym s exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -show sink -modes "sink:~/bin/rofi_sound.sh" -no-history -lines 0' ; mode "default"
+   bindsym e exec --no-startup-id zsh -c '~/.nix-profile/bin/rofi -modi "emoji:rofimoji" -show emoji' ; mode "default"
 
    ## just in case we did this by mistake
    bindsym Escape mode "default"
@@ -251,8 +247,8 @@ bindsym $mod+Delete exec --no-startup-id systemctl suspend
 
 # Screen brightness - needs ddcutil & i2c-dev kernel module
 bindsym $mod+XF86AudioLowerVolume exec --no-startup-id ddcutil --bus 19 setvcp 10 - 10 && ddcutil --bus 20 setvcp 10 - 10 
-bindsym --locked XF86MonBrightnessUp exec brightnessctl s -- '+5'
-bindsym --locked XF86MonBrightnessDown exec brightnessctl s -- '-5' 
+bindsym XF86MonBrightnessUp exec brightnessctl s -- '+5'
+bindsym XF86MonBrightnessDown exec brightnessctl s -- '-5' 
 bindsym $mod+XF86AudioRaiseVolume exec --no-startup-id ddcutil --bus 19 setvcp 10 + 10 && ddcutil --bus 20 setvcp 10 + 10
 
 
@@ -289,3 +285,8 @@ exec_always --no-startup-id picom --backend glx --vsync -C -G
 
 for_window [class="baka-mplayer"] floating enable
 for_window [class="albert"] border pixel 0
+
+
+gaps inner 5
+gaps outer -5
+smart_gaps on

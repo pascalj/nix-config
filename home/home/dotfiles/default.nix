@@ -6,6 +6,4 @@ let
   };
 in
 {
-  ".gdbinit.d/init".source = ./gdbinit;
-  ".gdbinit".source = gdb-dashboard;
 }

@@ -14,6 +14,7 @@
     nil
     ranger
     ripgrep
+    rofimoji
     tailscale
     tree
     watson
@@ -51,6 +52,11 @@
       plugins = [ pkgs.rofi-calc ];
       theme = ./home/rofi/nord.rasi;
     };
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      options = [ "--cmd cd" ];
+    };
     zsh = import ./home/zsh {
       inherit config lib pkgs;
     };
@@ -62,5 +68,10 @@
 
   xdg.configFile = {
     "i3/config".source = ./home/dotfiles/i3config;
+    "rofimoji.rc".text = ''
+      action = copy
+      skin-tone = neutral
+      max-recent = 0
+    '';
   };
 }
