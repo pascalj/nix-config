@@ -28,7 +28,7 @@
     gnome3.adwaita-icon-theme
     nerdfonts
 
-    clang-tools_16
+    clang-tools_17
   ];
 
   programs.git.userEmail = "pascal.jungblut@guardsquare.com";
@@ -63,6 +63,10 @@
       enable = true;
       bars.default = {
         blocks = [
+          {
+            block = "watson";
+            show_time = true;
+          }
           {
             block = "weather";
             service = {
