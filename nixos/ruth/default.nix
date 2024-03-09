@@ -98,8 +98,8 @@
     fprintd.enable = true;
     fwupd.enable = true;
     logind = {
-      lidSwitchDocked = "suspend";
-      lidSwitchExternalPower = "suspend";
+      lidSwitchDocked = "ignore";
+      lidSwitch = "suspend";
       powerKey = "suspend";
       powerKeyLongPress = "poweroff";
     };
@@ -174,7 +174,7 @@
   sound.mediaKeys.enable = true;
 
   virtualisation = {
-    docker.enable = true;
+    # docker.enable = true;
     vmware.host.enable = true;
   };
 }
