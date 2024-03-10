@@ -83,7 +83,10 @@ require 'gitsigns'.setup {}
 require 'lspconfig'.clangd.setup { on_attach = on_attach, cmd = { "clangd-vim" } }
 require 'lspconfig'.lua_ls.setup { on_attach = on_attach }
 require 'lspconfig'.ltex.setup {
-    on_attach = on_attach,
+    on_attach = function(client, buf_nr)
+        require("ltex_extra").setup { }
+        on_attach(client, buf_nr)
+    end,
     settings = {
         ltex = {
             additionalRules = {

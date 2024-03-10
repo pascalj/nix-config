@@ -32,6 +32,7 @@ in
     cmp-path
     gitsigns-nvim
     goto-preview
+    ltex_extra-nvim
     lualine-nvim
     minimap-vim
     nvim-autopairs
