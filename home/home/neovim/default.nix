@@ -6,6 +6,12 @@ let
     version = "v1.0.0";
     src = ./.;
   };
+  mellow-nvim = pkgs.fetchFromGitHub {
+    owner = "mellow-theme";
+    repo = "mellow.nvim";
+    rev = "52c3571fa8c2e7faec09e0fb3da56fca89576297";
+    hash = "sha256-FzcPSaS3Bu0M1/rGHjPQNNAoVECiOXYz0yA+mpXdhAA=";
+  };
   clang-tools = pkgs.clang-tools_17;
 in
 {
@@ -34,6 +40,7 @@ in
     goto-preview
     ltex_extra-nvim
     lualine-nvim
+    mellow-nvim
     minimap-vim
     nvim-autopairs
     nvim-cmp
