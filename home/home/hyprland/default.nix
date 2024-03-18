@@ -43,12 +43,15 @@
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod SHIFT, 0, movetoworkspace, 10"
+        "$mod SHIFT, y, exec,hyprctl keyword monitor \"eDP-1, disable\""
+        "$mod, y, exec,hyprctl keyword monitor \"eDP-1, preferred, 0x0, 1.333\""
       ];
 
-      bindl = [
-        ",switch:on:Lid Switch,exec,hyprctl keyword monitor \"eDP-1, disable\""
-        ",switch:off:Lid Switch,exec,hyprctl keyword monitor \"eDP-1, preferred, 0x0, 1.333\""
-      ];
+      ## Seems buggy atm
+      # bindl = [
+      #   ",switch:on:Lid Switch,exec,hyprctl keyword monitor \"eDP-1, disable\""
+      #   ",switch:off:Lid Switch,exec,hyprctl keyword monitor \"eDP-1, preferred, 0x0, 1.333\""
+      # ];
 
       # mouse
       bindm = [
@@ -70,7 +73,7 @@
         ];
       };
 
-      dwindle  = {
+      dwindle = {
         no_gaps_when_only = true;
       };
 
@@ -82,7 +85,7 @@
         };
       };
       monitor = [
-        "eDP-1,preferred,0x0,1"
+        "eDP-1,preferred,0x0,1.333"
         ",preferred,auto,1"
 
       ];
@@ -112,36 +115,36 @@
       enable = true;
       systemd.enable = true;
       settings = [{
-         modules-left = [ "hyprland/workspaces" ];
-         modules-center = [ "hyprland/window" ];
-         modules-right = [ "network" "pulseaudio" "backlight" "battery" "clock" ];
-         backlight = {
+        modules-left = [ "hyprland/workspaces" ];
+        modules-center = [ "hyprland/window" ];
+        modules-right = [ "network" "pulseaudio" "backlight" "battery" "clock" ];
+        backlight = {
           device = "intel_backlight";
           format = "{icon}";
-          format-icons =  ["" "" "" "" "" "" "" "" ""];
+          format-icons = [ "" "" "" "" "" "" "" "" "" ];
         };
-    pulseaudio = {
-        format = "{icon} {volume}%";
-        format-muted = "";
-        format-icons = {
-            "default" = ["" "" " "];
+        pulseaudio = {
+          format = "{icon} {volume}%";
+          format-muted = "";
+          format-icons = {
+            "default" = [ "" "" " " ];
+          };
+          on-click = "pavucontrol";
         };
-        on-click = "pavucontrol";
-      };
-    battery = {
-        states = {
+        battery = {
+          states = {
             warning = 30;
             critical = 15;
+          };
+          format = "{icon} {capacity}%";
+          format-charging = "󰂄 {capacity}%";
+          format-plugged = "󰂄";
+          format-alt = "{icon}";
+          format-icons = [ "󰂃" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" ];
         };
-        format = "{icon} {capacity}%";
-        format-charging = "󰂄 {capacity}%";
-        format-plugged = "󰂄";
-        format-alt = "{icon}";
-        format-icons = ["󰂃" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" ];
-    };
 
-       }];
-       style = ''
+      }];
+      style = ''
         @define-color base   #1e1e2e;
         @define-color mantle #181825;
         @define-color crust  #11111b;
@@ -273,7 +276,7 @@
           margin-right: 1rem;
           border-radius: 1rem;
         }
-       '';
+      '';
     };
     wofi = {
       enable = true;
@@ -281,22 +284,11 @@
   };
 
   xdg.configFile = {
-    "hypr/clam.zsh".text = ''
-      #!/usr/bin/env zsh
-      if [[ "$(hyprctl monitors)" =~ "\sDP-[0-9]+" ]]; then
-        if [[ $1 == "open" ]]; then
-          hyprctl keyword monitor "eDP-1,preferred,0x0,1.333"
-        else
-          hyprctl keyword monitor "eDP-1,disable"
-        fi
-      fi
-    '';
-
     "hypr/hyprpaper.conf".text = ''
       preload = /home/pascal/Downloads/wallpaper.svg
       wallpaper = ,/home/pascal/Downloads/wallpaper.svg
     '';
   };
 
-  systemd.user.services.swayidle.Install.WantedBy = lib.mkForce ["hyprland-session.target"];
+  systemd.user.services.swayidle.Install.WantedBy = lib.mkForce [ "hyprland-session.target" ];
 }

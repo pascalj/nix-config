@@ -5,7 +5,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_6_7;
-    kernelParams = ["amdgpu.sg_display=0"];
+    kernelParams = [ "amdgpu.sg_display=0" ];
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.configurationLimit = 8;
@@ -16,7 +16,7 @@
 
   environment = {
     loginShellInit = ''
-      [[ "$(tty)" == /dev/tty1 ]] && Hyprland
+      [[ "$(tty)" == /dev/tty1 ]] && sway
     '';
     sessionVariables = {
       MOZ_USE_XINPUT2 = "1";
@@ -89,7 +89,7 @@
     hyprland.enable = true;
   };
 
-  powerManagement.powertop.enable = true;
+  # powerManagement.powertop.enable = true;
 
   services = {
     dbus.enable = true;

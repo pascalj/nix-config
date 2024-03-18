@@ -32,7 +32,7 @@ font pango:Terminus 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec /usr/bin/kitty
+bindsym $mod+Return exec exec alacritty
 bindsym $mod+Shift+Return exec thunar
 
 # kill focused window
@@ -288,5 +288,14 @@ for_window [class="albert"] border pixel 0
 
 
 gaps inner 5
-gaps outer -5
-smart_gaps on
+# gaps outer -5
+# smart_gaps on
+
+set $laptop 'BOE 0x0BCA Unknown'
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+output $laptop scale 1.333
+
+corner_radius 7
+# default_border none
+default_dim_inactive 0.2
