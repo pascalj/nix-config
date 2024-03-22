@@ -19,6 +19,7 @@
         { username = "pascal"; hostname = "ruth"; }
         { username = "pascal"; hostname = "annie"; }
         { username = "pascal"; hostname = "GS-3KXV8Y3"; }
+        { username = "pascal"; hostname = "helen"; }
       ];
 
       pkgs = nixpkgs.legacyPackages.x86_64-linux;

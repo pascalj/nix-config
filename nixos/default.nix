@@ -22,4 +22,12 @@ in
       ./ruth
     ];
   };
+  # helen (NAS)
+  helen = lib.nixosSystem {
+    inherit system;
+    modules = [
+      ./configuration.nix
+      ./helen
+    ];
+  };
 }
