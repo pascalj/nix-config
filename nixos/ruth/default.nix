@@ -134,6 +134,26 @@
       ACTION=="add", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c548", ATTR{power/wakeup}="disabled"
     '';
     # tailscale.enable = true;
+    restic.backups = {
+      pascal = {
+        paths = [
+          "/home/pascal/"
+        ];
+        exclude = [
+          "vms"
+          ".ngrams"
+          ".cache"
+        ];
+        passwordFile = "/home/pascal/.restic-password";
+        repositoryFile = "/home/pascal/.restic-repository";
+        pruneOpts = [
+          "--keep-daily 7"
+          "--keep-weekly 5"
+          "--keep-monthly 12"
+          "--keep-yearly 10"
+        ];
+      };
+    };
   };
 
   users.users.pascal = {
