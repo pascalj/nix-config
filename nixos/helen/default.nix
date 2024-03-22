@@ -15,20 +15,21 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
+    # Tailscale exit node
     kernel.sysctl."net.ipv4.ip_forward" = 1;
+    zfs = {
+      extraPools = [ "data" ];
+      forceImportRoot = false;
+    };
+    supportedFilesystems = [ "zfs" ];
   };
   networking.hostName = "helen"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # ZFS
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.forceImportRoot = false;
   networking.hostId = "75290f93";
 
   services = {
-    blocky = {
-      enable = true;
-    };
     restic.server = {
       enable = true;
       dataDir = "${data}/restic";
@@ -74,6 +75,27 @@ in
     tailscale = {
       enable = true;
       useRoutingFeatures = "both";
+    };
+
+    samba = {
+      enable = true;
+      openFirewall = true;
+      securityType = "user";
+      shares = {
+        shared = {
+          path = "${data}/shares/Shared";
+          browsable = "yes";
+          "read only" = "no";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+          "force user" = "pascal";
+          "force group" = "users";
+        };
+      };
+    };
+    samba-wsdd = {
+      enable = true;
+      openFirewall = true;
     };
   };
 
