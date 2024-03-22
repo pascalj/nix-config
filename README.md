@@ -13,7 +13,7 @@ sudo nixos-rebuild switch --flake .
 Applying the home-manager config for a user:
 
 ```bash
-sudo home-manager switch --flake . 
+home-manager switch --flake . 
 ```
 
 ## Structure
@@ -23,17 +23,15 @@ but simply linked to ~/containers and then invoked with docker-compose.
 
 ```
 .
-├── nixos
-│   ├── myhost
-│   │   ├── containers
-│   │   │   └── docker-compose1.yml
-│   │   ├── default.nix # Configuration specific to myhost
-│   │   ├── hardware-configuration.nix # Hardware configuration as per installer
-│   │   └── home.nix # Home configuration specific to myhost
-│   ├── configuration.nix # General configuration for all hosts
-│   ├── default.nix # Setup for easier usage
-│   ├── home # Home Manager setup for all hosts
-│   │   ├── default.nix
-│   │   ├── neovim.nix
-│   │   └── ...
+├── home
+│   ├── config.nix # general config
+│   ├── default.nix
+│   ├── myHost.nix # host specific config
+│   └── home # dotfiles and modules
+├── nixos # NixOS configuration
+│   ├── myHost # host specific config
+│   ├── configuration.nix # general config
+│   ├── default.nix
+│   └── otherHost # host specific config
+└── README.md
 ```
