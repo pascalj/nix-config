@@ -5,8 +5,8 @@ in
 {
   imports =
     [
-      # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./blocky.nix
     ];
 
   # Bootloader.
@@ -137,8 +137,6 @@ in
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
-    # blocky
-    53
     # restic
     8000
     # Paperless
@@ -146,7 +144,10 @@ in
     # syncthing
     8384
   ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedUDPPorts = [
+    # blocky
+    53
+  ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
