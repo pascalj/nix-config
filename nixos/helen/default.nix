@@ -1,12 +1,10 @@
-{ config, pkgs, ... }:
-let
-  data = "/mnt/data";
-in
+{ config, pkgs, lib, ... }:
 {
   imports =
     [
       ./hardware-configuration.nix
       ./blocky.nix
+      ./nas.nix
     ];
 
   boot = {
@@ -23,120 +21,35 @@ in
     supportedFilesystems = [ "zfs" ];
   };
 
-  environment.systemPackages = [ pkgs.restic ];
+  environment.systemPackages = [ ];
 
   networking = {
+    networkmanager.enable = true;
     hostName = "helen";
     # for ZFS
     hostId = "75290f93";
-    firewall.allowedTCPPorts = [
-      # restic
-      8000
-      # Paperless
-      28981
-      # syncthing
-      8384
-    ];
-    firewall.allowedUDPPorts = [
-      # blocky
-      53
-    ];
-  };
-
-  services = {
-    restic.server = {
-      enable = true;
-      dataDir = "${data}/restic";
-    };
-    home-assistant = {
-      enable = true;
-      openFirewall = true;
-      configDir = "${data}/home-assistant";
-      config = { };
-    };
-    jellyfin = {
-      enable = true;
-      dataDir = "${data}/jellyfin";
-      openFirewall = true;
-    };
-    paperless = {
-      enable = true;
-      dataDir = "${data}/paperless/data";
-      mediaDir = "${data}/paperless/media";
-      consumptionDir = "${data}/paperless/consumption";
-      address = "0.0.0.0";
-    };
-    # ZFS snapshotting
-    sanoid = {
-      enable = true;
-      datasets = {
-        data = {
-          hourly = 24;
-          daily = 31;
-          monthly = 12;
-          yearly = 5;
-        };
-      };
-    };
-    syncthing = {
-      enable = true;
-      dataDir = "${data}/syncthing/";
-      openDefaultPorts = true;
-      overrideDevices = false;
-      overrideFolders = false;
-      guiAddress = "0.0.0.0:8384";
-    };
-    tailscale = {
-      enable = true;
-      useRoutingFeatures = "both";
-    };
-
-    samba = {
-      enable = true;
-      openFirewall = true;
-      securityType = "user";
-      extraConfig = ''
-        vfs objects = fruit streams_xattr  
-        fruit:metadata = stream
-        fruit:model = MacSamba
-        fruit:posix_rename = yes 
-        fruit:veto_appledouble = no
-        fruit:nfs_aces = no
-        fruit:wipe_intentionally_left_blank_rfork = yes 
-        fruit:delete_empty_adfiles = yes 
-      '';
-      shares = {
-        shared = {
-          path = "${data}/shares/Shared";
-          browsable = "yes";
-          "read only" = "no";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = "pascal";
-          "force group" = "users";
-        };
-      };
-    };
-    samba-wsdd = {
-      enable = true;
-      openFirewall = true;
+    firewall = {
+      allowedTCPPorts = [
+        # restic
+        8000
+        # Paperless
+        28981
+        # syncthing
+        8384
+      ];
+      allowedUDPPorts = [
+        # blocky
+        53
+      ];
     };
   };
 
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
     LC_IDENTIFICATION = "de_DE.UTF-8";
@@ -149,14 +62,6 @@ in
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
   programs = {
     mosh = {
       enable = true;
@@ -166,23 +71,6 @@ in
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
-  systemd.services."copy-restic" = {
-    script = ''
-      set -eu
-      ${pkgs.restic}/bin/restic copy --from-repo /mnt/data/restic --from-password-file /etc/nixos/secrets/restic-local-password --repository-file /etc/nixos/secrets/hetzner-repository -p /etc/nixos/secrets/hetzner-password
-    '';
-    path = [ pkgs.openssh ];
-    serviceConfig = {
-      User = "restic";
-    };
-  };
-  systemd.timers."copy-restic" = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "daily";
-    };
-  };
 
   system.stateVersion = "23.11";
 }
