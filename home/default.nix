@@ -8,6 +8,7 @@
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     bat
+    btop
     fd
     htop
     lazygit
