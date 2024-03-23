@@ -9,7 +9,6 @@ in
       ./blocky.nix
     ];
 
-  # Bootloader.
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -23,11 +22,26 @@ in
     };
     supportedFilesystems = [ "zfs" ];
   };
-  networking.hostName = "helen"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # ZFS
-  networking.hostId = "75290f93";
+  environment.systemPackages = [ pkgs.restic ];
+
+  networking = {
+    hostName = "helen";
+    # for ZFS
+    hostId = "75290f93";
+    firewall.allowedTCPPorts = [
+      # restic
+      8000
+      # Paperless
+      28981
+      # syncthing
+      8384
+    ];
+    firewall.allowedUDPPorts = [
+      # blocky
+      53
+    ];
+  };
 
   services = {
     restic.server = {
@@ -125,25 +139,6 @@ in
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.pascal = {
-    isNormalUser = true;
-    description = "Pascal Jungblut";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ ];
-  };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
-    git
-  ];
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -152,33 +147,32 @@ in
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
+  programs = {
+    mosh = {
+      enable = true;
+      openFirewall = true;
+    };
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    # restic
-    8000
-    # Paperless
-    28981
-    # syncthing
-    8384
-  ];
-  networking.firewall.allowedUDPPorts = [
-    # blocky
-    53
-  ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  systemd.services."copy-restic" = {
+    script = ''
+      set -eu
+      ${pkgs.restic}/bin/restic copy --from-repo /mnt/data/restic --from-password-file /etc/nixos/secrets/restic-local-password --repository-file /etc/nixos/secrets/hetzner-repository -p /etc/nixos/secrets/hetzner-password
+    '';
+    path = [ pkgs.openssh ];
+    serviceConfig = {
+      User = "restic";
+    };
+  };
+  systemd.timers."copy-restic" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+    };
+  };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
-
+  system.stateVersion = "23.11";
 }
