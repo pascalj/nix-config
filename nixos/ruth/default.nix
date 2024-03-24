@@ -22,8 +22,9 @@
       MOZ_USE_XINPUT2 = "1";
     };
     systemPackages = with pkgs; [
-      linuxKernel.packages.linux_6_7.vmware
       brightnessctl
+      cifs-utils
+      linuxKernel.packages.linux_6_7.vmware
       wayland
     ];
   };
@@ -89,7 +90,16 @@
     hyprland.enable = true;
   };
 
-  # powerManagement.powertop.enable = true;
+  # For mount.cifs, required unless domain name resolution is not needed.
+  fileSystems."/home/pascal/Helen" = {
+    device = "//helen/shared";
+    fsType = "cifs";
+    options =
+      let
+        automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,user=pascal";
+      in
+      [ "${automount_opts},credentials=/etc/nixos/secrets/smb,uid=1000,gid=100" ];
+  };
 
   services = {
     dbus.enable = true;
