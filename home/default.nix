@@ -1,10 +1,12 @@
 { config, pkgs, lib, ... }:
 {
+  imports = [
+    ./home/neovim
+    ./home/zsh
+    ./home/dotfiles
+  ];
   fonts.fontconfig.enable = true;
 
-  home.file = import ./home/dotfiles {
-    inherit pkgs lib;
-  };
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     bat
@@ -22,6 +24,8 @@
   ];
 
   news.display = "silent";
+
+  dotfiles.gdb-dashboard.enable = true;
 
   programs = {
     direnv = {
@@ -45,9 +49,6 @@
     };
     home-manager.enable = true;
     jq.enable = true;
-    neovim = import ./home/neovim {
-      inherit pkgs lib;
-    };
     rofi = {
       enable = true;
       plugins = [ pkgs.rofi-calc ];
@@ -58,21 +59,9 @@
       enableZshIntegration = true;
       options = [ "--cmd cd" ];
     };
-    zsh = import ./home/zsh {
-      inherit config lib pkgs;
-    };
   };
 
   services = {
     ssh-agent.enable = true;
-  };
-
-  xdg.configFile = {
-    "i3/config".source = ./home/dotfiles/i3config;
-    "rofimoji.rc".text = ''
-      action = copy
-      skin-tone = neutral
-      max-recent = 0
-    '';
   };
 }
