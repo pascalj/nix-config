@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    ./home/neovim
-    ./home/zsh
-    ./home/dotfiles
+    ./neovim
+    ./zsh
+    ./dotfiles
   ];
   fonts.fontconfig.enable = true;
 
@@ -52,7 +52,7 @@
     rofi = {
       enable = true;
       plugins = [ pkgs.rofi-calc ];
-      theme = ./home/rofi/nord.rasi;
+      theme = ./rofi/nord.rasi;
     };
     zoxide = {
       enable = true;

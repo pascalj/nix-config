@@ -248,7 +248,7 @@
   wayland.windowManager.sway = {
     enable = true;
     package = pkgs.swayfx;
-    extraConfig = builtins.readFile ./home/dotfiles/i3config;
+    extraConfig = builtins.readFile ./dotfiles/i3config;
     config = {
       bars = [ ];
       input = {
