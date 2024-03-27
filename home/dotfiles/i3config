@@ -259,7 +259,7 @@ assign [class="Spotify"] $ws4
 assign [class="gPodder"] $ws4
 assign [class="Signal"] $ws5
 for_window [class="Zeal"] floating enable, resize set width 1200 px height 1000 px
-for_window [window_role="PictureInPicture"] floating enable, sticky enable, border pixel 1
+for_window [title="Picture-in-Picture"] floating enable, sticky enable, border none
 for_window [title="Spotify"] move container to workspace 6
 
 
