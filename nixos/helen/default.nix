@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, ... }:
 {
   imports =
     [
@@ -36,6 +36,7 @@
         28981
         # syncthing
         8384
+        config.services.photoprism.port
       ];
       allowedUDPPorts = [
         # blocky
@@ -43,7 +44,6 @@
       ];
     };
   };
-
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";

@@ -6,21 +6,21 @@ let
   };
   cfg = config.dotfiles;
 in
-  {
-    options.dotfiles = {
-      gdb-dashboard.enable = lib.mkEnableOption "gdb-dashboard";
+{
+  options.dotfiles = {
+    gdb-dashboard.enable = lib.mkEnableOption "gdb-dashboard";
+  };
+  config = {
+    home.file = {
+      ".gdbinit".source = lib.mkIf cfg.gdb-dashboard.enable gdb-dashboard;
     };
-    config = {
-      home.file = {
-        ".gdbinit".source = lib.mkIf cfg.gdb-dashboard.enable gdb-dashboard;
-      };
-      xdg.configFile = {
-        "i3/config".source = ./i3config;
-        "rofimoji.rc".text = ''
-          action = copy
-          skin-tone = neutral
-          max-recent = 0
-        '';
-      };
+    xdg.configFile = {
+      "i3/config".source = ./i3config;
+      "rofimoji.rc".text = ''
+        action = copy
+        skin-tone = neutral
+        max-recent = 0
+      '';
     };
+  };
 }

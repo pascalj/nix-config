@@ -25,10 +25,17 @@ in {
       };
       paperless = {
         enable = true;
+        address = "0.0.0.0";
+        consumptionDir = "${cfg.pool}/paperless/consumption";
         dataDir = "${cfg.pool}/paperless/data";
         mediaDir = "${cfg.pool}/paperless/media";
-        consumptionDir = "${cfg.pool}/paperless/consumption";
+      };
+      photoprism = {
+        enable = true;
         address = "0.0.0.0";
+        originalsPath = "${cfg.pool}/photoprism/originals";
+        storagePath = "${cfg.pool}/photoprism/storage";
+        passwordFile = "/etc/nixos/secrets/photoprism";
       };
       # ZFS snapshotting
       sanoid = {
@@ -84,6 +91,23 @@ in {
       samba-wsdd = {
         enable = true;
         openFirewall = true;
+      };
+      restic.backups = {
+        data = {
+          paths = [
+            "${cfg.pool}/paperless"
+            "${cfg.pool}/shares"
+            "${cfg.pool}/photoprism"
+          ];
+          passwordFile = "/etc/nixos/secrets/hetzner-password";
+          repositoryFile = "/etc/nixos/secrets/hetzner-repository";
+          pruneOpts = [
+            "--keep-daily 7"
+            "--keep-weekly 5"
+            "--keep-monthly 13"
+            "--keep-yearly 10"
+          ];
+        };
       };
     };
 
